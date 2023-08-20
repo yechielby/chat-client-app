@@ -11,7 +11,9 @@ const SocketContextComponent: React.FC<ISockrtContextComponentProps> = (props) =
     const [SocketState, SocketDispatch] = useReducer(SocketReducer, defaultSocketContextState);
     const [loading, setLoading] = useState(true);
 
-    const socket = useSocket('ws://localhost:1337/', {
+    const serverHostname = "18.130.180.190";
+
+    const socket = useSocket(`ws://${serverHostname}/`, {
         reconnectionAttempts: 5,
         reconnectionDelay: 5000,
         autoConnect: false
@@ -24,7 +26,7 @@ const SocketContextComponent: React.FC<ISockrtContextComponentProps> = (props) =
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nickname: SocketState.nickname })
             };
-            fetch("http://localhost:1337/user/login", requestOptions)
+            fetch(`http://${serverHostname}/user/login`, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     if (data.result) {
